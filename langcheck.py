@@ -2,11 +2,13 @@
 """Module to check if each sentence in a document is Portuguese."""
 import os
 from os.path import abspath
-from googletrans import Translator
 import win32com.client as win32
 import xlrd
+import langid
 import pptx
 import csv
+import re
+from polyglot.detect import Detector
 base_path = os.path.dirname(abspath('__file__'))
 avail_exts = ['docx', 'doc', 'pptx', 'xls', 'xlsx', 'csv', 'txt', 'rtf']
 passed_exts = ['py', 'git', 'spec', 'exe', 'md', 'gitattributes',
@@ -50,7 +52,7 @@ def extract_text(fname, path=base_path):
     elif fname.endswith('.txt'):
         text_doc = open(fname, 'r', encoding='utf8')
         txt = text_doc.read()
-        txt.close()
+        text_doc.close()
     elif fname.endswith('.csv'):
         csv_doc = open(fname, 'r', encoding='utf8')
         csv_reader = csv.reader(csv_doc, delimiter=',')
@@ -60,16 +62,14 @@ def extract_text(fname, path=base_path):
 
 def lbl_langcheck(txt):
     "Check language of document sentence by sentence."
-    tokens = txt.split(".")
+    tokens = re.split('[?.;!:,\\n\\r]', txt)
     failed_sents = []
-    j = 1
     for i in tokens:
-        translator = Translator()
-        lan = translator.detect(i).lang
-        if lan != 'en':
+        tx = i.strip()
+        detector = Detector(tx, quiet=True)
+        lan = detector.language.code
+        if lan == 'pt':
             failed_sents.append(i)
-        print(j)
-        j += 1
     if len(failed_sents) != 0:
         msg = "Some sentences are not in English. Check following sentences."
     else:
@@ -109,19 +109,11 @@ def directory_check(path=base_path):
             null_msg = '{} is not one of the acceptable formats.'.format(i)
             msg_list.append(final_report(null_msg, i))
     result = open('script_result.txt', 'a', encoding='utf8')
-    for i in msg_list:
-        result.write(i)
-        result.close()
+    for j in msg_list:
+        result.write(j)
+    result.close()
     return
 #%%
 if __name__ == '__main__':
     directory_check()
-
-
-# %%
-translator = Translator()
-pe = "Hola Rafael"
-lan = translator.detect(pe).lang
-
-
-# %%
+    print('fuck')
