@@ -1,0 +1,7 @@
+__pycache__/ export-ignore
+build/langcheck/ export-ignore
+*.toc export-ignore
+xref-langcheck.html export-ignore
+hooks/ export-ignore
+file_store/ export-ignore
+polyglot_installation/ export-ignore

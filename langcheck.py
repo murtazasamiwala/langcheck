@@ -67,11 +67,11 @@ def lbl_langcheck(txt):
         detector = Detector(tx, quiet=True)
         lan = detector.language.code
         if lan == 'pt':
-            failed_sents.append(i)
+            failed_sents.append(tx)
     if len(failed_sents) != 0:
-        msg = "Some sentences are not in English. Check following sentences."
+        msg = "Some sentences may be in Portuguese. Check following sentences."
     else:
-        msg = "All sentences are in English."
+        msg = "No suspected Portuguese sentences found."
     return msg, failed_sents
 
 

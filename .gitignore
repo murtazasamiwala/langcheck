@@ -1,0 +1,8 @@
+build/
+dist/
+__pycache__/
+*.spec
+*.docx
+*.json
+file_store/
+polyglot_installation/
