@@ -1,10 +1,8 @@
-#%%
 """Module to check if each sentence in a document is Portuguese."""
 import os
 from os.path import abspath
 import win32com.client as win32
 import xlrd
-import langid
 import pptx
 import csv
 import re
@@ -12,8 +10,8 @@ from polyglot.detect import Detector
 base_path = os.path.dirname(abspath('__file__'))
 avail_exts = ['docx', 'doc', 'pptx', 'xls', 'xlsx', 'csv', 'txt', 'rtf']
 passed_exts = ['py', 'git', 'spec', 'exe', 'md', 'gitattributes',
-'gitignore', 'zip']
-#%%
+               'gitignore', 'zip']
+
 
 def extract_text(fname, path=base_path):
     """Extract text from given document."""
@@ -58,10 +56,10 @@ def extract_text(fname, path=base_path):
         csv_reader = csv.reader(csv_doc, delimiter=',')
         txt = '\n'.join(['\t'.join(row) for row in csv_reader])
     return txt
-#%%
+
 
 def lbl_langcheck(txt):
-    "Check language of document sentence by sentence."
+    """Check language of document sentence by sentence."""
     tokens = re.split('[?.;!:,\\n\\r]', txt)
     failed_sents = []
     for i in tokens:
@@ -75,24 +73,26 @@ def lbl_langcheck(txt):
     else:
         msg = "All sentences are in English."
     return msg, failed_sents
-#%%
+
 
 def final_report(msg, fname, sents=[]):
     """Format for writing to result file."""
     msg_head = '*' * 20 + '\n' + 'Result for {}:'.format(fname) + '\n'
     result_msg = 'RESULT :: ' + msg + '\n'
     if len(sents) != 0:
-        sents_msg = "\n".join(sents)
+        sents_msg = "\n**********\n".join(sents)
     else:
         sents_msg = ""
     return msg_head + result_msg + sents_msg
 
-#%%
+
 def directory_check(path=base_path):
     """Run whole module on a given directory."""
     msg_list = []
     for i in os.listdir(path):
         if os.path.isdir(i):
+            pass
+        elif i == 'script_result.txt':
             pass
         elif i.split('.')[-1] in passed_exts:
             pass
@@ -113,7 +113,7 @@ def directory_check(path=base_path):
         result.write(j)
     result.close()
     return
-#%%
+
+
 if __name__ == '__main__':
     directory_check()
-    print('fuck')
