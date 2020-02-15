@@ -1,4 +1,4 @@
-"""Module to check if each sentence in a document is Portuguese."""
+"""Module to check if any sentence in a document is Portuguese."""
 import os
 from os.path import abspath
 import win32com.client as win32
